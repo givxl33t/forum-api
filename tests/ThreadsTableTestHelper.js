@@ -3,7 +3,7 @@ const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const ThreadsTableTestHelper = {
   async addThread({
-    id = 'table-123',
+    id = 'thread-123',
     owner = 'user-123',
     title = 'judul thread',
     body = 'isi thread',
@@ -28,7 +28,7 @@ const ThreadsTableTestHelper = {
   },
 
   async cleanTable() {
-    await pool.query('TRUNCATE TABLE threads');
+    await pool.query('DELETE FROM threads WHERE 1=1');
   }
 }
 

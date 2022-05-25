@@ -21,7 +21,7 @@ describe('an AddThread entities', () => {
 
     // Action and Assert
     expect(() => new AddThread(payload)).toThrowError('ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION')
-  })
+  });
 
   it('should create AddThread object correctly', () => {
     // Arrange

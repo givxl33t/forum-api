@@ -79,5 +79,25 @@ describe('/threads endpoint', () => {
       expect(responseJson.status).toEqual('fail');
       expect(responseJson.message).toEqual('tidak dapat membuat thread baru karena tipe data tidak sesuai');
     });
+
+    it('should response 401 if a user authentication is missing', async () => {
+      const requestPayload = {
+        title: 80085,
+        body: 'sdood',
+      };
+
+      const server = await createServer(container);
+
+      const response = await server.inject({
+        method: 'POST',
+        url: '/threads',
+        payload: requestPayload,
+        headers: {}
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(401);
+      expect(responseJson.message).toEqual('Missing authentication');
+    });
   });
 });
