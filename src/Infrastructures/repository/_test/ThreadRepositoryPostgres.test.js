@@ -3,6 +3,7 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const AddThread = require('../../../Domains/threads/entities/AddThread');
 const AddedThread = require('../../../Domains/threads/entities/AddedThread');
+const ThreadDetails = require('../../../Domains/threads/entities/ThreadDetails');
 const pool = require('../../database/postgres/pool');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 
@@ -68,6 +69,32 @@ describe('ThreadRepositoryPostgres', () => {
         id: 'thread-420',
         title: 'judul thread',
         owner: 'user-123',
+      }));
+    });
+  });
+
+  describe('getThreadsById function', () => {
+    it('should throw NotFoundError when thread not found', async () => {
+      await ThreadsTableTestHelper.addThread({ id: 'thread-420' });
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      await expect(threadRepositoryPostgres.getThreadsById('thread-123'))
+        .rejects
+        .toThrowError(NotFoundError);
+    });
+
+    it('should return thread details correctly', async () => {
+      await ThreadsTableTestHelper.addThread({ id: 'thread-420', date: 'now' });
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      const threadDetails = await threadRepositoryPostgres.getThreadsById('thread-420');
+
+      expect(threadDetails).toStrictEqual(new ThreadDetails({
+        id: 'thread-420',
+        title: 'judul thread',
+        body: 'isi thread',
+        date: 'now',
+        username: 'dicoding',
       }));
     });
   });

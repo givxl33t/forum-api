@@ -5,6 +5,7 @@ const AuthorizationError = require('../../../Commons/exceptions/AuthorizationErr
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const AddComment = require('../../../Domains/comments/entities/AddComment');
 const AddedComment = require('../../../Domains/comments/entities/AddedComment');
+const CommentDetails = require('../../../Domains/comments/entities/CommentDetails');
 const pool = require('../../database/postgres/pool');
 const CommentRepositoryPostgres = require('../CommentRepositoryPostgres');
 
@@ -104,6 +105,35 @@ describe('CommentRepositoryPostgres', () => {
 
       await expect(commentRepositoryPostgres.checkAvailabilityComment('comment-420'))
         .resolves.not.toThrow(NotFoundError);
+    });
+  });
+
+  describe('getCommentByThreadId function', () => {
+    it('should throw NotFoundError when thread not found', async () => {
+      await CommentsTableTestHelper.addComment({ thread_id: 'thread-123' });
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      await expect(commentRepositoryPostgres.getCommentByThreadId('thread-500'))
+        .rejects
+        .toThrowError(NotFoundError);
+    });
+
+    it('should return comments by thread details correctly', async () => {
+      await CommentsTableTestHelper.addComment({ thread_id: 'thread-123', date: 'now'});
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      const commentDetails = await commentRepositoryPostgres.getCommentByThreadId('thread-123');
+
+      
+      expect(commentDetails).toEqual(
+        expect.arrayContaining([expect.objectContaining(new CommentDetails({
+            id: 'comment-123',
+            username: 'dicoding',
+            date: 'now',
+            content: 'isi komentar'
+          }))
+        ])
+      )
     });
   });
 });
