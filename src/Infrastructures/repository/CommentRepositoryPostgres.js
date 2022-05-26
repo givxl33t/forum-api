@@ -74,14 +74,15 @@ class CommentRepositoryPostgres extends CommentRepository {
       text: `SELECT comments.id, users.username, comments.date, comments.content
       FROM comments
       LEFT JOIN users ON comments.owner = users.id
-      WHERE thread_id = $1`,
+      LEFT JOIN threads ON comments.thread_id = threads.id
+      WHERE threads.id = $1 ORDER BY comments.date ASC`,
       values: [threadId],
     };
 
     const result = await this._pool.query(query);
 
     if(!result.rowCount) {
-      throw new NotFoundError('komentar tidak ditemukan');
+      throw new NotFoundError('thread tidak ditemukan');
     };
 
     return result.rows.filter((row) => (new CommentDetails({...row})))

@@ -114,15 +114,6 @@ describe('ReplyRepositoryPostgres', () => {
   });
 
   describe('getReplyByCommentId function', () => {
-    it('should throw NotFoundError when comment not found', async () => {
-      await RepliesTableTestHelper.addReply({ comment_id: 'comment-123' });
-      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
-
-      await expect(replyRepositoryPostgres.getReplyByCommentId('reply-500'))
-        .rejects
-        .toThrowError(NotFoundError);
-    });
-
     it('should return replies by comment details correctly', async () => {
       await RepliesTableTestHelper.addReply({ comment_id: 'reply-123', date: 'now'});
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});

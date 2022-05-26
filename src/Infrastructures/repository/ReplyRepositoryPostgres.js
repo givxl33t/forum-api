@@ -1,5 +1,6 @@
 const AddedReply = require('../../Domains/replies/entities/AddedReply');
 const ReplyRepository = require('../../Domains/replies/ReplyRepository');
+const ReplyDetails = require('../../Domains/replies/entities/ReplyDetails');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 
@@ -27,7 +28,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
   async deleteReply(replyId) {
     const query = {
-      text: `UPDATE replies SET content = '**komentar telah dihapus**', is_delete = true WHERE id = $1`,
+      text: `UPDATE replies SET content = '**balasan telah dihapus**', is_delete = true WHERE id = $1`,
       values: [replyId],
     };
 
@@ -73,20 +74,16 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const query = {
       text: `SELECT replies.id, replies.content, replies.date, users.username
       FROM replies
+      LEFT JOIN users ON replies.owner = users.id
       LEFT JOIN threads ON replies.thread_id = threads.id
       LEFT JOIN comments ON replies.comment_id = comments.id
-      LEFT JOIN users ON replies.owner = users.id
-      WHERE comments.id = $1`,
+      WHERE comments.id = $1 ORDER BY replies.date ASC`,
       values: [commentId],
     };
 
     const result = await this._pool.query(query);
 
-    if(!result.rowCount) {
-      throw new NotFoundError('balasan tidak ditemukan');
-    };
-
-    return result.rows;
+    return result.rows.filter((row) => (new ReplyDetails({...row})));
   }
 }
 
