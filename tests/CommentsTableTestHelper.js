@@ -7,7 +7,7 @@ const CommentsTableTestHelper = {
     owner = 'user-123',
     threadId = 'thread-123',
     content = 'isi komentar',
-    date = new Date().toISOString()
+    date = new Date().toISOString(),
   }) {
     const query = {
       text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5)',

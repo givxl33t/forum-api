@@ -81,13 +81,13 @@ describe('CommentRepositoryPostgres', () => {
 
       await expect(commentRepositoryPostgres.verifyCommentOwnership('comment-420', 'user-420')).rejects.toThrow(AuthorizationError);
     });
-  });
 
-  it('should not throw error if comments owner matches with the auth credentials', async () => {
-    const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
-
-    await CommentsTableTestHelper.addComment({ id: 'comment-420', owner: 'user-123'});
-    await expect(commentRepositoryPostgres.verifyCommentOwnership('comment-420', 'user-123')).resolves.not.toThrowError(AuthorizationError);
+    it('should not throw error if comments owner matches with the auth credentials', async () => {
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+  
+      await CommentsTableTestHelper.addComment({ id: 'comment-420', owner: 'user-123'});
+      await expect(commentRepositoryPostgres.verifyCommentOwnership('comment-420', 'user-123')).resolves.not.toThrowError(AuthorizationError);
+    });
   });
 
   describe('checkAvailabilityComment function', () => {
