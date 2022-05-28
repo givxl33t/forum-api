@@ -31,8 +31,8 @@ describe('DeleteCommentFromThreadUseCase', () => {
       commentId: 'comment-123',
     };
     const mockCommentRepository = new CommentRepository();
-    mockCommentRepository.verifyCommentOwnership = jest.fn(() => Promise.resolve());
     mockCommentRepository.checkAvailabilityComment = jest.fn(() => Promise.resolve());
+    mockCommentRepository.verifyCommentOwnership = jest.fn(() => Promise.resolve());
     mockCommentRepository.deleteComment = jest.fn(() => Promise.resolve());
 
     const deleteCommentFromThreadUseCase = new DeleteCommentFromThreadUseCase({

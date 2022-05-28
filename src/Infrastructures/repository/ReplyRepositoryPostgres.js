@@ -28,7 +28,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
   async deleteReply(replyId) {
     const query = {
-      text: `UPDATE replies SET content = '**balasan telah dihapus**', is_delete = true WHERE id = $1`,
+      text: `UPDATE replies SET is_delete = true WHERE id = $1`,
       values: [replyId],
     };
 
@@ -42,10 +42,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     };
 
     const result = await this._pool.query(query);
-
-    if (!result.rowCount) {
-      throw new NotFoundError('balasan tidak ditemukan di database');
-    }
 
     const reply = result.rows[0];
 
@@ -72,7 +68,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
   async getReplyByCommentId(commentId) {
     const query = {
-      text: `SELECT replies.id, replies.content, replies.date, users.username
+      text: `SELECT replies.id, replies.content, replies.date, users.username, replies.is_delete
       FROM replies
       LEFT JOIN users ON replies.owner = users.id
       LEFT JOIN threads ON replies.thread_id = threads.id
@@ -83,7 +79,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     const result = await this._pool.query(query);
 
-    return result.rows.filter((row) => (new ReplyDetails({...row})));
+    return result.rows.map((row) => (new ReplyDetails({...row})));
   }
 }
 

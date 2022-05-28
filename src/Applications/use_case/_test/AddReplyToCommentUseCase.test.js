@@ -24,7 +24,11 @@ describe('AddReplyToCommentUseCase', () => {
     const mockCommentRepository = new CommentRepository();
     const mockThreadRepository = new ThreadRepository();
 
-    mockReplyRepository.addReply = jest.fn(() => Promise.resolve(expectedAddedReply));
+    mockReplyRepository.addReply = jest.fn(() => Promise.resolve(new AddedReply({
+      id: 'reply-123',
+      content: useCasePayload.content,
+      owner: useCasePayload.owner,
+    })));
     mockCommentRepository.checkAvailabilityComment = jest.fn(() => Promise.resolve());
     mockThreadRepository.verifyThreadById = jest.fn(() => Promise.resolve());
 

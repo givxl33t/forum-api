@@ -31,8 +31,8 @@ describe('DeleteReplyFromCommentUseCase', () => {
       replyId: 'reply-123',
     };
     const mockReplyRepository = new ReplyRepository();
-    mockReplyRepository.verifyReplyOwnership = jest.fn(() => Promise.resolve());
     mockReplyRepository.checkAvailabilityReply = jest.fn(() => Promise.resolve());
+    mockReplyRepository.verifyReplyOwnership = jest.fn(() => Promise.resolve());
     mockReplyRepository.deleteReply = jest.fn(() => Promise.resolve());
 
     const deleteReplyFromCommentUseCase = new DeleteReplyFromCommentUseCase({

@@ -17,6 +17,7 @@ describe('a CommentDetails entitites', () => {
       username: 'johndoe',
       date: '2022-05-25T07:22:33.555Z',
       content: 222,
+      is_delete: "false",
     };
 
     expect(() => new CommentDetails(payload)).toThrowError('COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
@@ -28,6 +29,7 @@ describe('a CommentDetails entitites', () => {
       username: 'johndoe',
       date: '2022-05-25T07:22:33.555Z',
       content: "sebuah comment",
+      is_delete: false,
     };
 
     const { id, username, date, content } = new CommentDetails(payload);

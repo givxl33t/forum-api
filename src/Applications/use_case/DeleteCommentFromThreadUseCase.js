@@ -8,8 +8,8 @@ class DeleteCommentFromThreadUseCase {
   async execute(useCasePayload) {
     this._validatePayload(useCasePayload);
     const { owner, commentId } = useCasePayload;
-    await this._commentRepository.verifyCommentOwnership(commentId, owner);
     await this._commentRepository.checkAvailabilityComment(commentId);
+    await this._commentRepository.verifyCommentOwnership(commentId, owner);
     await this._commentRepository.deleteComment(commentId);
   }
 

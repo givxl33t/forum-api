@@ -130,7 +130,8 @@ describe('CommentRepositoryPostgres', () => {
             id: 'comment-123',
             username: 'dicoding',
             date: 'now',
-            content: 'isi komentar'
+            content: 'isi komentar',
+            is_delete: false,
           }))
         ])
       )

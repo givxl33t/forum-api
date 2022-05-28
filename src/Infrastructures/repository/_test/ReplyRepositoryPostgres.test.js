@@ -127,6 +127,7 @@ describe('ReplyRepositoryPostgres', () => {
             content: 'isi balasan',
             date: 'now',
             username: 'dicoding',
+            is_delete: false,
           }))
         ])
       )

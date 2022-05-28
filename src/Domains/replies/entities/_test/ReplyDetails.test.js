@@ -17,6 +17,7 @@ describe('a ReplyDetails entitites', () => {
       content: 'a rerpyly',
       date: 333,
       username: 'dohnjoe',
+      is_delete: false,
     };
 
     expect(() => new ReplyDetails(payload)).toThrowError('REPLY_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
@@ -28,6 +29,7 @@ describe('a ReplyDetails entitites', () => {
       content: 'isi balasan',
       date: '2021-08-08T08:07:01',
       username: 'dohnjoe',
+      is_delete: false,
     };
 
     const { id, content, date, username } = new ReplyDetails(payload);
