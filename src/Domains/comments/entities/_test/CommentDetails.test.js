@@ -39,4 +39,21 @@ describe('a CommentDetails entitites', () => {
     expect(date).toEqual(payload.date);
     expect(content).toEqual(payload.content);
   });
+
+  it('should implement comment soft delete correctly', () => {
+    const payload = {
+      id: 'comment-_pby2tmXV6bcvcdev8xk',
+      username: 'johndoe',
+      date: '2022-05-25T07:22:33.555Z',
+      content: 'komentar belum dihapus',
+      is_delete: true,
+    };
+
+    const { id, username, date, content } = new CommentDetails(payload);
+
+    expect(id).toEqual(payload.id);
+    expect(username).toEqual(payload.username);
+    expect(date).toEqual(payload.date);
+    expect(content).toEqual('**komentar telah dihapus**');
+  });
 });

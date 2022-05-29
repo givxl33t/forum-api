@@ -39,4 +39,21 @@ describe('a ReplyDetails entitites', () => {
     expect(date).toEqual(payload.date);
     expect(username).toEqual(payload.username);
   });
+
+  it('should implement reply soft delete correctly', () => {
+    const payload = {
+      id: 'reply-123',
+      content: 'balasan belum dihapus',
+      date: '2021-08-08T08:07:01',
+      username: 'dohnjoe',
+      is_delete: true,
+    };
+
+    const { id, content, date, username } = new ReplyDetails(payload);
+    
+    expect(id).toEqual(payload.id);
+    expect(content).toEqual('**balasan telah dihapus**');
+    expect(date).toEqual(payload.date);
+    expect(username).toEqual(payload.username);
+  });
 });
