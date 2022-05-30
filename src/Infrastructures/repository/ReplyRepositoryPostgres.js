@@ -61,25 +61,23 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     const result = await this._pool.query(query);
 
-    if (result.rows.length === 0) {
+    if (!result.rowCount) {
       throw new NotFoundError('balasan tidak ditemukan di database');
     }
   }
 
-  async getReplyByCommentId(commentId) {
+  async getReplyByCommentId(commentIds) {
     const query = {
-      text: `SELECT replies.id, replies.content, replies.date, users.username, replies.is_delete
+      text: `SELECT replies.*, users.username
       FROM replies
-      LEFT JOIN users ON replies.owner = users.id
-      LEFT JOIN threads ON replies.thread_id = threads.id
-      LEFT JOIN comments ON replies.comment_id = comments.id
-      WHERE comments.id = $1 ORDER BY replies.date ASC`,
-      values: [commentId],
+      INNER JOIN users ON users.id = replies.owner
+      WHERE replies.comment_id = ANY($1::text[]) ORDER by replies.date ASC`, //commentIds bertipe array string
+      values: [commentIds],
     };
 
     const result = await this._pool.query(query);
 
-    return result.rows.map((row) => (new ReplyDetails({...row})));
+    return result.rows.map((row) => (new ReplyDetails({...row, date: row.date.toISOString()})));
   }
 }
 

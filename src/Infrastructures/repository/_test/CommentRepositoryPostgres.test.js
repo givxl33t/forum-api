@@ -119,7 +119,8 @@ describe('CommentRepositoryPostgres', () => {
     });
 
     it('should return comments by thread details correctly', async () => {
-      await CommentsTableTestHelper.addComment({ thread_id: 'thread-123', date: 'now'});
+      const date = new Date();
+      await CommentsTableTestHelper.addComment({ thread_id: 'thread-123', date});
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       const commentDetails = await commentRepositoryPostgres.getCommentByThreadId('thread-123');
@@ -129,7 +130,7 @@ describe('CommentRepositoryPostgres', () => {
         expect.arrayContaining([expect.objectContaining(new CommentDetails({
             id: 'comment-123',
             username: 'dicoding',
-            date: 'now',
+            date: date.toISOString(),
             content: 'isi komentar',
             is_delete: false,
           }))

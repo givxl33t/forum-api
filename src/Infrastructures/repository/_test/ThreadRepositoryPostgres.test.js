@@ -84,7 +84,8 @@ describe('ThreadRepositoryPostgres', () => {
     });
 
     it('should return thread details correctly', async () => {
-      await ThreadsTableTestHelper.addThread({ id: 'thread-420', date: 'now' });
+      const date = new Date();
+      await ThreadsTableTestHelper.addThread({ id: 'thread-420', date });
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
       const threadDetails = await threadRepositoryPostgres.getThreadsById('thread-420');
@@ -93,7 +94,7 @@ describe('ThreadRepositoryPostgres', () => {
         id: 'thread-420',
         title: 'judul thread',
         body: 'isi thread',
-        date: 'now',
+        date: date.toISOString(),
         username: 'dicoding',
       }));
     });

@@ -11,14 +11,19 @@ class GetThreadDetailsUseCase {
 
   async execute(useCasePayload) {
     const { threadId } = useCasePayload;
+    const commentIds = [];
 
     const thread = await this._threadRepository.getThreadsById(threadId);
     let comments = await this._commentRepository.getCommentByThreadId(threadId);
+    comments.forEach(comment => {
+      commentIds.push(comment.id);
+    });
+    const replies = await this._replyRepository.getReplyByCommentId(commentIds);
+
     comments = await Promise.all(comments.map(async (comment) => {
-      const replies = await this._replyRepository.getReplyByCommentId(comment.id);
       comment.replies = replies;
       return comment;
-    }))
+    }));
 
     return { ...thread, comments };
   }

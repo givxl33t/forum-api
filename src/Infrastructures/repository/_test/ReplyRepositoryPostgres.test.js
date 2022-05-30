@@ -115,17 +115,18 @@ describe('ReplyRepositoryPostgres', () => {
 
   describe('getReplyByCommentId function', () => {
     it('should return replies by comment details correctly', async () => {
-      await RepliesTableTestHelper.addReply({ comment_id: 'reply-123', date: 'now'});
+      const date  = new Date();
+      await RepliesTableTestHelper.addReply({ comment_id: 'reply-123', date});
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
 
-      const replyDetails = await replyRepositoryPostgres.getReplyByCommentId('comment-123');
+      const replyDetails = await replyRepositoryPostgres.getReplyByCommentId(['comment-123']);
 
 
       expect(replyDetails).toEqual(
         expect.arrayContaining([expect.objectContaining(new ReplyDetails({
             id: 'reply-123',
             content: 'isi balasan',
-            date: 'now',
+            date: date.toISOString(),
             username: 'dicoding',
             is_delete: false,
           }))

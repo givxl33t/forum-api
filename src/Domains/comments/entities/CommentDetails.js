@@ -18,7 +18,7 @@ class CommentDetails {
     if (typeof id !== 'string' ||
         typeof username !== 'string' ||
         typeof date !== 'string' ||
-        typeof content !== 'string',
+        typeof content !== 'string' ||
         typeof is_delete !== 'boolean') {
       throw new Error('COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }

@@ -60,7 +60,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     const result = await this._pool.query(query);
 
-    if (result.rows.length === 0) {
+    if (!result.rowCount) {
       throw new NotFoundError('komentar tidak ditemukan di database');
     }
   }
@@ -81,7 +81,7 @@ class CommentRepositoryPostgres extends CommentRepository {
       throw new NotFoundError('thread tidak ditemukan');
     };
 
-    return result.rows.map((row) => (new CommentDetails({...row})))
+    return result.rows.map((row) => (new CommentDetails({...row, date: row.date.toISOString()})))
   }
 }
 

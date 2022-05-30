@@ -120,6 +120,6 @@ describe('GetThreadDetailsUseCase', () => {
     expect(mockCommentRepository.getCommentByThreadId)
       .toBeCalledWith('thread-123');
     expect(mockReplyRepository.getReplyByCommentId)
-      .toBeCalledWith('comment-123');
+      .toBeCalledWith(['comment-123', 'comment-456']);
   })
 })

@@ -9,6 +9,8 @@ exports.up = (pgm) => {
     owner: {
       type: 'VARCHAR(50)',
       notNull: true,
+      references: 'users',
+      onDelete: 'CASCADE',
     },
     title: {
       type: 'TEXT',
@@ -19,15 +21,11 @@ exports.up = (pgm) => {
       notNull: true,
     },
     date: {
-      type: 'TEXT',
+      type: 'timestamp',
       notNull: true,
+      default: pgm.func('current_timestamp'),
     }
   })
-
-  pgm.addConstraint(
-    'threads', 
-    'fk_threads.owner_users.id', 
-    'FOREIGN KEY(owner) REFERENCES users(id) ON DELETE CASCADE')
 };
 
 exports.down = (pgm) => {
